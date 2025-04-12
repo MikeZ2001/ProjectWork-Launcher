@@ -18,16 +18,16 @@ services:
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_DATABASE=finance_api
-      - DB_USERNAME=finance_user
-      - DB_PASSWORD=finance_password
+      - DB_DATABASE=project_work_api
+      - DB_USERNAME=project_work_user
+      - DB_PASSWORD=project_work_password
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - finance-network
+      - project_work-network
 
   # React Frontend
   frontend:
@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
     volumes:
       - ../ProjectWork-FE:/app
-      - frontend_node_modules:/app/node_modules
+      - /app/node_modules
     ports:
       - "3000:3000"
     environment:
@@ -49,17 +49,17 @@ services:
     depends_on:
       - api
     networks:
-      - finance-network
+      - project_work-network
 
   # MySQL Database
   db:
     image: mysql:8.0
-    container_name: finance-db
+    container_name: project_work-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: finance_api
-      MYSQL_USER: finance_user
-      MYSQL_PASSWORD: finance_password
+      MYSQL_DATABASE: project_work_api
+      MYSQL_USER: project_work_user
+      MYSQL_PASSWORD: project_work_password
       MYSQL_ROOT_PASSWORD: root_password
       SERVICE_NAME: mysql
     ports:
@@ -67,7 +67,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - finance-network
+      - project_work-network
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
@@ -76,7 +76,7 @@ services:
       retries: 5
 
 networks:
-  finance-network:
+  project_work-network:
     driver: bridge
 
 volumes:

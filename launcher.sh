@@ -125,7 +125,7 @@ clean_stack() {
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo -e "${YELLOW}Cleaning up App stack...${NC}"
         docker compose down -v
-        echo -e "${GREEN}✅ Finance App stack has been completely cleaned.${NC}"
+        echo -e "${GREEN}✅ App stack has been completely cleaned.${NC}"
     else
         echo -e "${BLUE}Operation canceled.${NC}"
     fi

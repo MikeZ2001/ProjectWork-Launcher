@@ -8,7 +8,7 @@ This repository contains a Docker Compose setup for running the App stack, which
 
 ## Requirements
 
-- Docker and Docker Compose
+- Docker and Docker Compose (if not installed: https://medium.com/@piyushkashyap045/comprehensive-guide-installing-docker-and-docker-compose-on-windows-linux-and-macos-a022cf82ac0b)
 - Git
 - Bash shell (included in macOS and Linux, use Git Bash on Windows)
 
