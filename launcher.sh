@@ -14,7 +14,6 @@ NC="\033[0m" # No Color
 API_DIR="../ProjectWork-BE"
 FRONTEND_DIR="../ProjectWork-FE"
 
-# Display header
 display_header() {
     echo "================================================"
     echo "       🚀  App Stack Launcher 🚀         "
@@ -22,7 +21,6 @@ display_header() {
     echo
 }
 
-# Check if Docker is running
 check_docker() {
     echo "Checking if Docker is running..."
     if ! docker info > /dev/null 2>&1; then
@@ -58,7 +56,8 @@ show_help() {
 # Function to start the stack
 start_stack() {
     echo -e "${YELLOW}Starting the App stack...${NC}"
-    docker compose up -d
+    docker compose up --force-recreate --build --remove-orphans
+    docker exec -it ProjectWork-BE composer install
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ App stack is now running!${NC}"
         echo

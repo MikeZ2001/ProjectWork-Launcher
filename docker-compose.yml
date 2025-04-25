@@ -1,12 +1,12 @@
-version: '3.8'
-
 services:
   # Laravel API Backend
   api:
+    container_name: ProjectWork-BE
     build:
       context: ../ProjectWork-BE
       dockerfile: Dockerfile
-    container_name: ProjectWork-BE
+
+    hostname: ProjectWork-BE
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -53,8 +53,11 @@ services:
 
   # MySQL Database
   db:
-    image: mysql:8.0
     container_name: project_work-db
+    image: container-registry.oracle.com/mysql/community-server:8.0
+    command: --default-authentication-plugin=mysql_native_password --sql-mode="NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - mysql_data:/var/lib/mysql
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: project_work_api
@@ -64,11 +67,9 @@ services:
       SERVICE_NAME: mysql
     ports:
       - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
     networks:
       - project_work-network
-    command: --default-authentication-plugin=mysql_native_password
+
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
