@@ -76,6 +76,22 @@ services:
       timeout: 5s
       retries: 5
 
+  nginx:
+      image: nginx:alpine
+      container_name: ProjectWork-NGINX
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        - ./nginx/certs:/etc/ssl/certs
+      depends_on:
+        - api
+        - frontend
+      networks:
+        - project_work-network
+
 networks:
   project_work-network:
     driver: bridge

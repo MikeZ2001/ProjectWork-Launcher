@@ -56,8 +56,25 @@ show_help() {
 # Function to start the stack
 start_stack() {
     echo -e "${YELLOW}Starting the App stack...${NC}"
+
+      if [[ ! -f ./nginx/certs/devcert.pem || ! -f ./nginx/certs/devkey.pem ]]; then
+          echo "🔧 Creating self-signed certs..."
+
+          mkdir -p ./nginx/certs
+
+          openssl req -x509 -nodes -days 365 \
+            -newkey rsa:2048 \
+            -keyout ./nginx/certs/devkey.pem \
+            -out ./nginx/certs/devcert.pem \
+            -subj "/CN=localhost"
+          echo "✅ Certs created at ./nginx/certs/"
+        else
+          echo "✅ Certs already exist, skipping generation."
+        fi
+
     docker compose up --force-recreate --build --remove-orphans
     docker exec -it ProjectWork-BE composer install
+
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ App stack is now running!${NC}"
         echo
@@ -161,8 +178,8 @@ setup_stack() {
 # Function to show access information
 show_access_info() {
     echo -e "${YELLOW}=== Access Information ===${NC}"
-    echo -e "Frontend: http://localhost:3000"
-    echo -e "Backend API: http://localhost:8000/api"
+    echo -e "Frontend: https://localhost"
+    echo -e "Backend API: https://localhost/api"
     echo -e "Sample user for testing:"
     echo -e "  - Email: john.doe@example.com"
     echo -e "  - Password: password"
