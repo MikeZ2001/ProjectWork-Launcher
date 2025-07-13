@@ -64,6 +64,7 @@ services:
       MYSQL_USER: project_work_user
       MYSQL_PASSWORD: project_work_password
       MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_HOST: '%'
       SERVICE_NAME: mysql
     ports:
       - "3306:3306"
